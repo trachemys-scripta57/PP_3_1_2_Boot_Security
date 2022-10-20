@@ -1,13 +1,20 @@
 package ru.kata.spring.boot_security.demo.models;
 
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "person")
-public class Person {
+@Component
+public class Person implements UserDetails {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,21 +39,57 @@ public class Person {
     @Column(name = "password")
     private String password;
 
+
+    public Person() {
+    }
+
     @ManyToMany
     @JoinTable(name = "person_roles",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<Role> roles;
 
-    public Person() {
-    }
 
-    public Person(int id, String name, int age, String email, String password) {
-        this.id = id;
+    public Person(String name, int age, String email, String password, Set<Role> roles) {
         this.name = name;
         this.age = age;
         this.email = email;
         this.password = password;
+        this.roles = roles;
+    }
+
+    @Override
+    public Set<? extends SimpleGrantedAuthority> getAuthorities() {
+        Set<SimpleGrantedAuthority> authorities =
+                getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+                        .collect(Collectors.toSet());
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public int getId() {
@@ -89,6 +132,14 @@ public class Person {
         this.password = password;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -97,6 +148,7 @@ public class Person {
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }
