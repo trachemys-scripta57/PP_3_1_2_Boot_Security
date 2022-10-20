@@ -1,11 +1,38 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title>Spring Security</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
+<h1> Это всё ты, дорогой: </h1>
+<form action="#" method="GET" th:action="@{/admin/new/}" th:object="${user}">
+    <label for="name">Login</label>
+    <input type="text" th:field="*{name}" id="name"/>
 
+
+    <br/>
+    <label for="age">Age</label>
+    <input type="number" min="0" max="100" th:field="*{age}" id="age">
+
+    <br/>
+    <label for="email">E-mail</label>
+    <input type="text" th:field="*{email}" id="email">
+
+    <br/>
+    <label for="role">Role</label>
+    <input type="text" th:field="*{role}" id="role">
+
+    <br/>
+        <br/>
+        <label for="password">Password</label>
+        <input type="password" th:field="*{password}" id="password"/>
+
+        <br/>
+
+</form>
+<br/>
+<button class="buttonLogout" onclick="window.location.href = '/logout';">Logout</button>
 
 </body>
 </html>

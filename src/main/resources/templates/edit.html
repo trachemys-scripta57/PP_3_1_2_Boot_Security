@@ -23,6 +23,11 @@
     <div style="color:blue" th:field="${#fields.hasErrors('email')}"
          th:errors="*{email}">E-mail error</div>
     <br/>
+    <label for="password">Введите пароль: </label>
+    <input type="text" th:field="*{password}" id="password"/>
+    <div style="color:#fffb00" th:field="${#fields.hasErrors('password')}"
+         th:errors="*{password}">E-mail password</div>
+    <br/>
     <input type="submit" value="Update!"/>
 
 </form>
