@@ -24,7 +24,6 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
     }
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Person person = personRepository.findByName(s);
 
@@ -34,7 +33,6 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
         return person;
     }
     @Override
-    @Transactional
     public Person findUserByUsername(String s) {
         return personRepository.findByName(s);
     }
@@ -44,11 +42,13 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
         return personRepository.getById(id);
     }
 
+    @Transactional
     @Override
     public void save(Person person) {
         personRepository.save(passwordCoder(person));
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
         personRepository.deleteById(id);

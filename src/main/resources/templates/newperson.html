@@ -33,7 +33,7 @@
     </style>
 </head>
 <body>
-<b>  Добавить нового пользователя </b>
+<b> Добавить нового пользователя </b>
 <form action="#" method="POST" th:action="@{/admin/new/}" th:object="${user}">
     <table>
         <tr>
@@ -82,8 +82,9 @@
     </table>
 </form>
 <br>
-<button class="buttonLogout" onclick="window.location.href = '/logout';">Logout</button>
-
+<form th:action="@{/logout}" th:method="POST">
+    <button class="buttonLogout" onclick="window.location.href = '/logout';">Logout</button>
+</form>
 <br>
 <br>
 <button class="buttonGoBack" onclick="window.location.href = '/admin';">Back to list</button>

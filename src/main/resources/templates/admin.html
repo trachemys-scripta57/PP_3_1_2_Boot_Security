@@ -12,20 +12,24 @@
             border-width: 1px;
             background-color: white;
         }
+
         button {
             padding: 5px;
             background: cornflowerblue;
         }
+
         .buttonDelete {
             background: #fd3434;
             color: white;
         }
+
         .buttonEdit {
             background: palegoldenrod;
             position: relative;
             left: 50%;
             transform: translate(-50%, 0);
         }
+
         .buttonLogout {
             padding: 5px;
             background-color: darkgray;
@@ -35,7 +39,7 @@
 </head>
 <body>
 
-<b>   Список пользователей:  </b>
+<b> Список пользователей: </b>
 <table>
     <tr>
         <th th:width="100">Имя</th>
@@ -69,6 +73,8 @@
 <br>
 
 <br>
-<button class="buttonLogout" onclick="window.location.href = '/logout';">Logout</button>
+<form th:action="@{/logout}" th:method="POST">
+    <button class="buttonLogout" onclick="window.location.href = '/logout';">Logout</button>
+</form>
 </body>
 </html>
