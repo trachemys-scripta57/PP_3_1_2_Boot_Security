@@ -1,38 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Spring Security</title>
+    <title>Person</title>
+    <style>
+        table th, table td, form {
+            padding: 10px 5px;
+            font-family: sans-serif;
+            font-size: 14px;
+            border-style: solid;
+            border-width: 1px;
+            background-color: white;
+        }
+        .buttonLogout {
+            padding: 5px;
+            background-color: darkgrey;
+        }
+    </style>
 </head>
 <body>
-<h1> Это всё ты, дорогой: </h1>
-<form action="#" method="GET" th:action="@{/admin/new/}" th:object="${user}">
-    <label for="name">Login</label>
-    <input type="text" th:field="*{name}" id="name"/>
+<h1> Спасибо что зашёл, дорогой </h1>
+<b><h2> ...твои данные </h2></b>
+<table>
+    <tr>
+<!--        <th th:width="30">ID</th>-->
+        <th th:width="100">Имя</th>
+        <th th:width="50">Возраст</th>
+<!--        <th th:width="100">Country</th>-->
+        <th th:width="100">E-mail</th>
+        <th th:width="100">Пароль</th>
+    </tr>
 
+    <tr th:each="user : ${user}"> </tr>
 
-    <br/>
-    <label for="age">Age</label>
-    <input type="number" min="0" max="100" th:field="*{age}" id="age">
+<!--    <td th:utext="${user.getId()}">Id</td>-->
+    <td th:utext="${user.name}">Name</td>
+    <td th:utext="${user.age}">Age</td>
+<!--    <td th:utext="${user.country}">Country</td>-->
+    <td th:utext="${user.email}">E-mail</td>
+    <td th:utext="${user.password}">Password</td>
 
-    <br/>
-    <label for="email">E-mail</label>
-    <input type="text" th:field="*{email}" id="email">
-
-    <br/>
-    <label for="role">Role</label>
-    <input type="text" th:field="*{role}" id="role">
-
-    <br/>
-        <br/>
-        <label for="password">Password</label>
-        <input type="password" th:field="*{password}" id="password"/>
-
-        <br/>
-
-</form>
-<br/>
+</table>
+<br>
 <button class="buttonLogout" onclick="window.location.href = '/logout';">Logout</button>
-
 </body>
 </html>

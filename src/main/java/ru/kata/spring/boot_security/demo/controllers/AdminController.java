@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Person;
 import ru.kata.spring.boot_security.demo.services.PersonService;
@@ -26,14 +27,14 @@ public class AdminController {
 
     @GetMapping()
     public String pageForAdmin(Model model) {
-        model.addAttribute("user", personService.findAll());
+        model.addAttribute("users", personService.findAll());
         return "admin";
     }
 
     @GetMapping("/new")
     public String newUser(@ModelAttribute("user") Person person, Model model) {
         model.addAttribute("listRoles", roleService.findAllRoles());
-        return "users";
+        return "newperson";
     }
 
     @PostMapping("/new")
@@ -41,14 +42,19 @@ public class AdminController {
                          @ModelAttribute("user") @Valid Person person,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "new";
+            return "newperson";
+        }
+        if (personService.findUserByUsername(person.getUsername()) != null) {
+            bindingResult.addError(new FieldError("username","username",
+                    String.format("Пользователь \"%s\" уже существует!",person.getUsername())));
+            return "newperson";
         }
         person.setRoles(roleService.findRoleById(roles));
         personService.save(person);
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/edit/{id}")
+    @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         personService.deleteById(id);
         return "redirect:/admin";
@@ -58,7 +64,7 @@ public class AdminController {
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("user", personService.getById(id));
         model.addAttribute("listRoles", roleService.findAllRoles());
-        return "edit";
+        return "editperson";
     }
 
     @PatchMapping("{id}")
@@ -67,7 +73,7 @@ public class AdminController {
                          @ModelAttribute("user") @Valid Person person,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "edit";
+            return "editperson";
         }
         person.setRoles(roleService.findRoleById(roles));
         personService.save(person);
