@@ -3,18 +3,19 @@ package ru.kata.spring.boot_security.demo.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
 import ru.kata.spring.boot_security.demo.models.Person;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.services.PersonService;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.security.Principal;
 
-@Controller
+
 @RequestMapping("/admin")
+@Controller
 public class AdminController {
     private final PersonService personService;
     private final RoleService roleService;
@@ -26,57 +27,41 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String pageForAdmin(Model model) {
+    public String pageForAdmin(Model model, Principal principal) {
+        StringBuilder roles = new StringBuilder();
+        for (Role role : personService.findUserByEmail(principal.getName()).getRoles()) {
+            roles.append(role.toString());
+            roles.append(" ");
+        }
+        model.addAttribute("thisUserRole", roles);
         model.addAttribute("users", personService.findAll());
+        model.addAttribute("this_user", personService.findUserByEmail(principal.getName()));
+        model.addAttribute("new_user", new Person());
+        model.addAttribute("roles", roleService.findAllRoles());
         return "admin";
     }
 
-    @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") Person person, Model model) {
-        model.addAttribute("listRoles", roleService.findAllRoles());
-        return "newperson";
-    }
-
     @PostMapping("/new")
-    public String create(@RequestParam("role") ArrayList<Integer> roles,
-                         @ModelAttribute("user") @Valid Person person,
-                         BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "newperson";
-        }
-        if (personService.findUserByUsername(person.getUsername()) != null) {
-            bindingResult.addError(new FieldError("username","username",
-                    String.format("Пользователь \"%s\" уже существует!",person.getUsername())));
-            return "newperson";
-        }
-        person.setRoles(roleService.findRoleById(roles));
+    public String createPerson(@ModelAttribute("user") @Valid Person person,
+                               @RequestParam(value = "nameRole") String[] roles) {
+        person.setRoles(roleService.getSetOfRoles(roles));
         personService.save(person);
         return "redirect:/admin";
     }
 
     @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public String delete(@PathVariable("id") int id, @ModelAttribute Person person,
+                         @RequestParam(value = "deleteRole") String[] roles) {
+        person.setRoles(roleService.getSetOfRoles(roles));
         personService.deleteById(id);
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", personService.getById(id));
-        model.addAttribute("listRoles", roleService.findAllRoles());
-        return "editperson";
-    }
-
-    @PatchMapping("{id}")
-    public String update(@RequestParam("role") ArrayList<Integer> roles,
-                         @PathVariable("id") int id,
-                         @ModelAttribute("user") @Valid Person person,
-                         BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "editperson";
-        }
-        person.setRoles(roleService.findRoleById(roles));
-        personService.save(person);
+    @PatchMapping("/edit/{id}")
+    public String update(@PathVariable("id") int id, @ModelAttribute @Valid Person person,
+                         @RequestParam(value = "editRoles") String[] roles) {
+        person.setRoles(roleService.getSetOfRoles(roles));
+        personService.update(person.getId(), person);
         return "redirect:/admin";
     }
 }

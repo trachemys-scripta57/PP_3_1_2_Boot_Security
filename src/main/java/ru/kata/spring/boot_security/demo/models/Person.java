@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.models;
 
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -43,8 +44,12 @@ public class Person implements UserDetails {
 
     public Person() {
     }
-
-    @ManyToMany
+    @Cascade({
+            org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.MERGE,
+            org.hibernate.annotations.CascadeType.PERSIST
+    })
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "person_roles",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))

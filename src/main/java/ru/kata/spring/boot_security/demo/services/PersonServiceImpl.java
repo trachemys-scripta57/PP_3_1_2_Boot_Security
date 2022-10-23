@@ -25,27 +25,35 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Person person = personRepository.findByName(s);
+        Person person = personRepository.findUserByEmail(s);
 
         if (person == null) {
             throw new UsernameNotFoundException("Пользователь не найден");
         }
         return person;
     }
-    @Override
-    public Person findUserByUsername(String s) {
-        return personRepository.findByName(s);
-    }
 
     @Override
-    public Person getById(int id) {
-        return personRepository.getById(id);
+    public Person findUserByEmail(String email) {
+        return personRepository.findUserByEmail(email);
     }
-
     @Transactional
     @Override
     public void save(Person person) {
         personRepository.save(passwordCoder(person));
+    }
+
+    @Transactional
+    @Override
+    public void update(int id, Person updatedPerson) {
+        Person person = personRepository.getById(id);
+        if (updatedPerson.getPassword().equals(person.getPassword())) {
+            personRepository.update(updatedPerson);
+        } else {
+            String pass = passwordEncoder.encode(updatedPerson.getPassword());
+            updatedPerson.setPassword(pass);
+            personRepository.update(updatedPerson);
+        }
     }
 
     @Transactional
@@ -59,6 +67,7 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
         return personRepository.findAll();
     }
 
+    @Transactional
     @Override
     public Person passwordCoder(Person person) {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
