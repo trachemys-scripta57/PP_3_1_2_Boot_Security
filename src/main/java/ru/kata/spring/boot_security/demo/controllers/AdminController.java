@@ -42,25 +42,19 @@ public class AdminController {
     }
 
     @PostMapping("/new")
-    public String createPerson(@ModelAttribute("user") @Valid Person person,
-                               @RequestParam(value = "nameRole") String[] roles) {
-        person.setRoles(roleService.getSetOfRoles(roles));
+    public String createPerson(@ModelAttribute("user") @Valid Person person) {
         personService.save(person);
         return "redirect:/admin";
     }
 
     @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id, @ModelAttribute Person person,
-                         @RequestParam(value = "deleteRole") String[] roles) {
-        person.setRoles(roleService.getSetOfRoles(roles));
+    public String delete(@PathVariable("id") int id) {
         personService.deleteById(id);
         return "redirect:/admin";
     }
 
     @PatchMapping("/edit/{id}")
-    public String update(@PathVariable("id") int id, @ModelAttribute @Valid Person person,
-                         @RequestParam(value = "editRoles") String[] roles) {
-        person.setRoles(roleService.getSetOfRoles(roles));
+    public String update(@PathVariable("id") int id, @ModelAttribute @Valid Person person) {
         personService.update(person.getId(), person);
         return "redirect:/admin";
     }

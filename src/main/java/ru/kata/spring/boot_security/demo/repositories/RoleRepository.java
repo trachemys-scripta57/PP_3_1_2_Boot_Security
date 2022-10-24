@@ -8,8 +8,5 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface RoleRepository {
-    List<Role> findAllRoles();
-    Role getRole(String role);
-    public Set<Role> getSetOfRoles(String[] roleNames);
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 }

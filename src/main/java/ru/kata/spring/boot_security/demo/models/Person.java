@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,12 +45,12 @@ public class Person implements UserDetails {
 
     public Person() {
     }
-    @Cascade({
-            org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-            org.hibernate.annotations.CascadeType.MERGE,
-            org.hibernate.annotations.CascadeType.PERSIST
-    })
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @Cascade({
+//            org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+//            org.hibernate.annotations.CascadeType.MERGE,
+//            org.hibernate.annotations.CascadeType.PERSIST
+//    })
+    @ManyToMany // Lazy by default
     @JoinTable(name = "person_roles",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
@@ -75,8 +76,9 @@ public class Person implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
+    // авторизация по e-mail
 
     @Override
     public boolean isAccountNonExpired() {
@@ -139,6 +141,9 @@ public class Person implements UserDetails {
     }
 
     public Set<Role> getRoles() {
+        if (roles == null) {
+            roles = new HashSet<>();
+        }
         return roles;
     }
 

@@ -22,7 +22,7 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
         this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Person person = personRepository.findUserByEmail(s);
@@ -48,11 +48,11 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
     public void update(int id, Person updatedPerson) {
         Person person = personRepository.getById(id);
         if (updatedPerson.getPassword().equals(person.getPassword())) {
-            personRepository.update(updatedPerson);
+            personRepository.save(updatedPerson);
         } else {
             String pass = passwordEncoder.encode(updatedPerson.getPassword());
             updatedPerson.setPassword(pass);
-            personRepository.update(updatedPerson);
+            personRepository.save(updatedPerson);
         }
     }
 

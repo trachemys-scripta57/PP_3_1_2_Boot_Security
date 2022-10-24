@@ -11,5 +11,4 @@ import java.util.Set;
 public interface RoleService {
 
     List<Role> findAllRoles();
-    Set<Role> getSetOfRoles(String[] roleName);
 }
