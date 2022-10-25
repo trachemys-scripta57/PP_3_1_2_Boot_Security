@@ -8,6 +8,10 @@ import java.util.Set;
 
 public interface RoleService {
     Role getByIdRoles(int id);
+
+    Role addRole(Role role);
+
     List<Role> findAllRoles();
+
     Set<Role> findRoleById(ArrayList<Integer> roles);
 }

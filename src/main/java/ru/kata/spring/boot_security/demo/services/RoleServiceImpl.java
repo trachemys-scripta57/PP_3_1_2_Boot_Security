@@ -33,4 +33,13 @@ public class RoleServiceImpl implements RoleService {
     public Set<Role> findRoleById(ArrayList<Integer> roles) {
         return new HashSet<>(roleRepository.findAllById(roles));
     }
+
+    @Override
+    public Role addRole(Role role) {
+        return roleRepository.getById(role.getId());
+    }
+    public void saveRole(Role role) {
+        roleRepository.save(role);
+    }
 }
+

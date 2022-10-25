@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Person;
 import ru.kata.spring.boot_security.demo.repositories.PersonRepository;
+import ru.kata.spring.boot_security.demo.security.PersonDetail;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonServiceImpl implements UserDetailsService, PersonService {
@@ -24,16 +26,16 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Person person = personRepository.findByName(s);
-
-        if (person == null) {
+        Optional<Person> personDetail = personRepository.findByName(s);
+        if (personDetail.isEmpty()) {
             throw new UsernameNotFoundException("Пользователь не найден");
         }
-        return person;
+        return new PersonDetail(personDetail.get());
     }
     @Override
-    public Person findUserByUsername(String s) {
+    public Optional<Person> findUserByUsername(String s) {
         return personRepository.findByName(s);
     }
 
