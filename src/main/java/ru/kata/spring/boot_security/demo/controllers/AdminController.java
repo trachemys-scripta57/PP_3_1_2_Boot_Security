@@ -44,11 +44,6 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "newperson";
         }
-        if (personService.findUserByUsername(person.getUsername()) != null) {
-            bindingResult.addError(new FieldError("username","username",
-                    String.format("Пользователь \"%s\" уже существует!",person.getUsername())));
-            return "newperson";
-        }
         person.setRoles(roleService.findRoleById(roles));
         personService.save(person);
         return "redirect:/admin";

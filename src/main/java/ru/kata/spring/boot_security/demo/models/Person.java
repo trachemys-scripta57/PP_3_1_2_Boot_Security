@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "person")
 @Component
-public class Person implements UserDetails {
+public class Person {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,40 +57,6 @@ public class Person implements UserDetails {
         this.email = email;
         this.password = password;
         this.roles = roles;
-    }
-
-    @Override
-    public Set<? extends SimpleGrantedAuthority> getAuthorities() {
-        Set<SimpleGrantedAuthority> authorities =
-                getRoles().stream()
-                        .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
-                        .collect(Collectors.toSet());
-        return authorities;
-    }
-
-    @Override
-    public String getUsername() {
-        return name;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 
     public int getId() {
