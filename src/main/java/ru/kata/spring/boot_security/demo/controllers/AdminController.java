@@ -42,11 +42,12 @@ public class AdminController {
     public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         userValidation.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "/newperson";
+            return "newperson";
         }
         regService.register(user);
         return "redirect:/admin";
     }
+
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.delete(id);
@@ -56,12 +57,13 @@ public class AdminController {
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("user", userService.showUser(id));
-        return "editperson";
+        return "/editperson";
     }
+
     @PatchMapping("{id}")
     public String update(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
-                        @PathVariable int id) {
+                         @PathVariable("id") int id) {
         userValidation.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             return "editperson";
@@ -69,5 +71,4 @@ public class AdminController {
         userService.update(id, user);
         return "redirect:/admin";
     }
-
 }

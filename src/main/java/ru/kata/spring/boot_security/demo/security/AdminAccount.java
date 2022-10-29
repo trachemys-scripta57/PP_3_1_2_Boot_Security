@@ -10,7 +10,6 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -27,14 +26,13 @@ public class AdminAccount {
     @PostConstruct
     public void admin() {
         User admin = new User("admin", 100, "admin@admin", "$2y$10$Q/ByAu6ZatO2e1yWxA2u3OONg6dQwnwNWmDm.bc70Je5/3ti5V6.y");
-        Role roleUser = new Role("ROLE_USER");
+//        Role roleUser = new Role("ROLE_USER");
         Role roleAdmin = new Role("ROLE_ADMIN");
-        admin.setRoleList(new HashSet<>(List.of(roleUser, roleAdmin)));
-        roleUser.setUserList(new ArrayList<>(Collections.singletonList(admin)));
+//        admin.setRoleList(new ArrayList<>(List.of(roleUser, roleAdmin)));
         roleAdmin.setUserList(new ArrayList<>(Collections.singletonList(admin)));
         if (userService.userByUsername(admin.getName()).isEmpty()) {
             userService.save(admin);
-            roleService.saveRole(roleUser);
+//            roleService.saveRole(roleUser);
             roleService.saveRole(roleAdmin);
         }
     }

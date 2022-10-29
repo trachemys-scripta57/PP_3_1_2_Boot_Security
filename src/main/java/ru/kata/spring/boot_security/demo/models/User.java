@@ -14,16 +14,18 @@ import java.util.*;
 @NamedEntityGraph(name = "User.role", attributeNodes = @NamedAttributeNode("roleList"))
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @NotEmpty(message = "Имя не должно быть пустым")
     @Size(min = 2, max = 30, message = "Имя должно быть в пределах от 2 до 30 символов")
+    @Column(name = "name")
     private String name;
 
     @Min(value = 0, message = "Возраст должен быть больше, чем 0")
+    @Column(name = "age")
     private int age;
 
     @Column(name = "email")
@@ -31,18 +33,14 @@ public class User {
     private String email;
 
     @NotEmpty(message = "Password не должен быть пустым")
+    @Column(name = "password")
     private String password;
 
     @ManyToMany(mappedBy = "userList")
     @Cascade(CascadeType.DELETE)
-    private Set<Role> roleList;
+    private List<Role> roleList;
 
     public User() {
-    }
-
-    public User(int id, String name, int age, String email, String password) {
-        this(name, age, email, password);
-        this.id = id;
     }
 
     public User(String name, int age, String email, String password) {
@@ -68,14 +66,11 @@ public class User {
         this.age = age;
     }
 
-    public Set<Role> getRoleList() {
-        if (roleList == null) {
-            roleList = new HashSet<>();
-        }
+    public List<Role> getRoleList() {
         return roleList;
     }
 
-    public void setRoleList(Set<Role> roleList) {
+    public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
     }
 
@@ -83,7 +78,7 @@ public class User {
         return name;
     }
 
-    public void setName(String username) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -93,5 +88,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
