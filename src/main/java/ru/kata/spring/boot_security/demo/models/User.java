@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.models;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -38,8 +39,9 @@ public class User {
 
     public User() {
     }
+
     public User(int id, String name, int age, String email, String password) {
-        this (name, age, email, password);
+        this(name, age, email, password);
         this.id = id;
     }
 
@@ -56,10 +58,6 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public int getAge() {
@@ -81,11 +79,11 @@ public class User {
         this.roleList = roleList;
     }
 
-    public String getUsername() {
+    public String getName() {
         return name;
     }
 
-    public void setUsername(String username) {
+    public void setName(String username) {
         this.name = name;
     }
 
@@ -96,7 +94,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-//    public User getUser() {
-//        return this.user;
-//    }
 }
