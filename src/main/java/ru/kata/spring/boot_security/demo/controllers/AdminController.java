@@ -60,10 +60,10 @@ public class AdminController {
         return "/editperson";
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping("/edit/{id}")
     public String update(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                         @PathVariable int id) {
         userValidation.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             return "editperson";

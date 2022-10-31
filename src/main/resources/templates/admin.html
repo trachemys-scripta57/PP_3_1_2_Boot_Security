@@ -54,7 +54,6 @@
         <td th:utext="${users.name}">Name</td>
         <td th:utext="${users.age}">Age</td>
         <td th:utext="${users.password}">Password</td>
-<!--        <td th:utext="${users.roles}">Role</td>-->
         <td>
             <form th:action="@{'/admin/edit/' + ${users.id}}">
                 <input class="buttonEdit" type="submit" value="Edit"/>

@@ -28,7 +28,7 @@ public class UserValidation implements Validator {
         User user = (User) target;
         Optional<User> userCheckByName =userService.userByUsername(user.getName());
         if (userCheckByName.isPresent()) {
-            errors.rejectValue("username", "", "Данное имя пользователя уже занято");
+            errors.rejectValue("name", "", "Данное имя пользователя уже занято");
         }
     }
 }

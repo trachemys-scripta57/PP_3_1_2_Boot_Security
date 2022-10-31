@@ -38,8 +38,8 @@
     <table>
         <tr>
             <td>
-                <label for="name">Имя</label>
-                <input type="text" th:field="*{name}" id="name"/>
+                <label for="username">Имя</label>
+                <input type="text" th:field="*{name}" id="username"/>
                 <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
             </td>
         </tr>

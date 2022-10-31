@@ -26,9 +26,9 @@ GrantedAuthority и UserDetails соответственно. Измените
 его страницу /user.
 
 **Выполнение:**
-- Класс 'security/AdminAccount' после создания бинов, но 
+- Класс 'security/AdminAccount' после создания beans, но 
 до старта сервиса (@PostConstruct) проверяет наличие в БД
-пользователя "**admin**" (password: **admin**), и если его нет;
-- Класс 'service/RegService' добаляет всем новым пользователям 
- права "ROLE_USER";
-- 
+пользователя "**admin**" (password: **admin**), и если 
+его нет, то добавляет такого пользователя в БД;
+- Класс 'service/RegService' добавляет всем новым пользователям 
+ права "ROLE_USER".
