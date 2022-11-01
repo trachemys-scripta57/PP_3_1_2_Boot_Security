@@ -23,8 +23,8 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 // авторизация по имени
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Optional<User> userDetails = userRepository.findByName(name);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> userDetails = userRepository.findByEmail(email);
         if (userDetails.isEmpty()) {
             throw new UsernameNotFoundException("Пользователь не найден");
         } else {
