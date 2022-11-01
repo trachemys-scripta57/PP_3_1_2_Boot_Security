@@ -10,26 +10,27 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
-@Service
-public class RegService {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public RegService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    public void register(User user) {
-        Role role = new Role("ROLE_USER");
-        user.setRoleList(new ArrayList<>(Collections.singletonList(role)));
-        role.setUserList(new ArrayList<>(Collections.singletonList(user)));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        roleRepository.save(role);
-    }
-}
+//@Service
+//public class RegService {
+//    private final UserRepository userRepository;
+//    private final RoleRepository roleRepository;
+//    private final PasswordEncoder passwordEncoder;
+//
+//    @Autowired
+//    public RegService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+//        this.userRepository = userRepository;
+//        this.roleRepository = roleRepository;
+//        this.passwordEncoder = passwordEncoder;
+//    }
+//
+//    public void register(User user) {
+//        Role role = new Role("ROLE_USER");
+//        user.setRoleList(new HashSet<>(Collections.singletonList(role)));
+//        role.setUserList(new ArrayList<>(Collections.singletonList(user)));
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        userRepository.save(user);
+//        roleRepository.save(role);
+//    }
+//}

@@ -21,7 +21,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public MyUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-// авторизация по имени
+
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         Optional<User> userDetails = userRepository.findByName(name);
@@ -30,6 +30,5 @@ public class MyUserDetailsService implements UserDetailsService {
         } else {
             return new MyUserDetails(userDetails.get());
         }
-
     }
 }

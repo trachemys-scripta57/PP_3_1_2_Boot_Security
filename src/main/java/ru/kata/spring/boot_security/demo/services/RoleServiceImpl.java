@@ -4,8 +4,11 @@ import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     public RoleServiceImpl(RoleRepository roleRepository) {
@@ -13,7 +16,12 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public void saveRole(Role role) {
-        roleRepository.save(role);
+    public void saveAll(Set<Role> roles) {
+        roleRepository.saveAll(roles);
+    }
+
+    @Override
+    public Set<Role> findAllRoles() {
+        return new HashSet<>(roleRepository.findAll());
     }
 }

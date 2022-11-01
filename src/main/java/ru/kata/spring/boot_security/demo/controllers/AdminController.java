@@ -1,50 +1,46 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.RegService;
+import ru.kata.spring.boot_security.demo.security.MyUserDetails;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
-import ru.kata.spring.boot_security.demo.util.UserValidation;
 
-import javax.validation.Valid;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private final UserService userService;
-    private final RegService regService;
-    private final UserValidation userValidation;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService, RegService regService, UserValidation userValidation) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.regService = regService;
-        this.userValidation = userValidation;
+        this.roleService = roleService;
     }
 
     @GetMapping()
     public String adminPage(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
+        model.addAttribute("admin", userDetails.getUser());
         model.addAttribute("users", userService.findAllUser());
+        model.addAttribute("roles", roleService.findAllRoles());
+        model.addAttribute("newUser", new User());
         return "admin";
     }
 
     @GetMapping("/new")
-    public String createUser(Model model) {
-        model.addAttribute("user", new User());
-        return "newperson";
-    }
-
-    @PostMapping("/new")
-    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        userValidation.validate(user, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "newperson";
-        }
-        regService.register(user);
+    public String createUser(@ModelAttribute("user") User user,
+                             @RequestParam("roles") Set<Role> roles) {
+        userService.save(user, roles);
         return "redirect:/admin";
     }
 
@@ -54,21 +50,11 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.showUser(id));
-        return "/editperson";
-    }
-
     @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult,
-                         @PathVariable int id) {
-        userValidation.validate(user, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "editperson";
-        }
-        userService.update(id, user);
+    public String update(@ModelAttribute("user") User user,
+                         @PathVariable int id,
+                         @RequestParam("roles") Set<Role> roles) {
+        userService.update(id, user, roles);
         return "redirect:/admin";
     }
 }

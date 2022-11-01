@@ -36,11 +36,11 @@ public class Role implements GrantedAuthority {
         this.role = role;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -54,5 +54,8 @@ public class Role implements GrantedAuthority {
 
     public void setUserList(List<User> userList) {
         this.userList = userList;
+    }
+    public String getShortRoleName() {
+        return this.role.substring(5);
     }
 }

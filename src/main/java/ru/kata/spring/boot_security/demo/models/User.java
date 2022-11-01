@@ -38,7 +38,7 @@ public class User {
 
     @ManyToMany(mappedBy = "userList")
     @Cascade(CascadeType.DELETE)
-    private List<Role> roleList;
+    private Set<Role> roleList;
 
     public User() {
     }
@@ -50,11 +50,11 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -66,11 +66,11 @@ public class User {
         this.age = age;
     }
 
-    public List<Role> getRoleList() {
+    public Set<Role> getRoleList() {
         return roleList;
     }
 
-    public void setRoleList(List<Role> roleList) {
+    public void setRoleList(Set<Role> roleList) {
         this.roleList = roleList;
     }
 

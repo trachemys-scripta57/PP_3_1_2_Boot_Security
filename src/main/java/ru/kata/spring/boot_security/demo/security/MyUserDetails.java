@@ -8,9 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class MyUserDetails implements UserDetails {
     private final User user;
@@ -21,9 +19,8 @@ public class MyUserDetails implements UserDetails {
     }
 
     @Override
-    @EntityGraph(value = "User.role", type = EntityGraph.EntityGraphType.LOAD)
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> list = new ArrayList<>();
+        Set<GrantedAuthority> list = new HashSet<>();
         for (Role role : user.getRoleList()) {
             list.add(new SimpleGrantedAuthority(role.getAuthority()));
         }

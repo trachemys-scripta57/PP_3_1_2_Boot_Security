@@ -4,33 +4,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @Override
-    public User showUser(int id) {
-        return userRepository.findById(id).orElse(null);
+        this.roleService = roleService;
     }
 
     @Override
     @Transactional
-    public void save(User user) {
+    public void save(User user, Set<Role> roles) {
+        user.setRoleList(roles);
+        roles.forEach(f -> f.setUserList(new ArrayList<>(Collections.singletonList(user))));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        roleService.saveAll(roles);
     }
 
     @Override
@@ -40,10 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void update(int id, User updatedUser) {
+    public void update(int id, User updatedUser, Set<Role> roles) {
         updatedUser.setId(id);
-        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        userRepository.save(updatedUser);
+        save(updatedUser, roles);
     }
 
     @Override
