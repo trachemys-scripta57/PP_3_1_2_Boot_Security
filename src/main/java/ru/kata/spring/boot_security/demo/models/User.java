@@ -1,14 +1,11 @@
 package ru.kata.spring.boot_security.demo.models;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.*;
+import java.util.Set;
 
 @Entity
 @NamedEntityGraph(name = "User.role", attributeNodes = @NamedAttributeNode("roleList"))
@@ -16,16 +13,13 @@ import java.util.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @NotEmpty(message = "Имя не должно быть пустым")
     @Size(min = 2, max = 30, message = "Имя должно быть в пределах от 2 до 30 символов")
-    @Column(name = "name")
     private String name;
 
     @Min(value = 0, message = "Возраст должен быть больше, чем 0")
-    @Column(name = "age")
     private int age;
 
     @Column(name = "email")
@@ -33,11 +27,12 @@ public class User {
     private String email;
 
     @NotEmpty(message = "Password не должен быть пустым")
-    @Column(name = "password")
     private String password;
 
-    @ManyToMany(mappedBy = "userList")
-    @Cascade(CascadeType.DELETE)
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roleList;
 
     public User() {

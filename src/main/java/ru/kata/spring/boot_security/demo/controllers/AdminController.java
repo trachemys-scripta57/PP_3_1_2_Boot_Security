@@ -15,7 +15,6 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
@@ -26,7 +25,7 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping()
+    @GetMapping("/admin")
     public String adminPage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
@@ -34,23 +33,23 @@ public class AdminController {
         model.addAttribute("users", userService.findAllUser());
         model.addAttribute("roles", roleService.findAllRoles());
         model.addAttribute("newUser", new User());
-        return "admin";
+        return "admin/adminPage";
     }
 
-    @GetMapping("/new")
+    @PostMapping("/admin/new")
     public String createUser(@ModelAttribute("user") User user,
                              @RequestParam("roles") Set<Role> roles) {
         userService.save(user, roles);
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.delete(id);
         return "redirect:/admin";
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/admin/edit/{id}")
     public String update(@ModelAttribute("user") User user,
                          @PathVariable int id,
                          @RequestParam("roles") Set<Role> roles) {

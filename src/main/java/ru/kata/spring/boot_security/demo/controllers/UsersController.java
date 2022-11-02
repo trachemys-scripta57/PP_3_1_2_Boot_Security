@@ -17,6 +17,6 @@ public class UsersController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
         model.addAttribute("user", myUserDetails.getUser());
-        return "users";
+        return "user/users";
     }
 }

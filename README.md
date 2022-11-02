@@ -6,4 +6,7 @@
 
 Ход решения:
 1. Меняем авторизацию пользователя с имени на e-mail:
-- 
+- Добавляем .usernameParameter("email") в WebSecurityConfigurerAdapter; 
+- Изменяем параметр поиска в методе loadUserByUsername() в MyUserDetailsService;
+- Дописываем возможность выбора роли в формах Edit и NewUser;
+- Прикручиваем-подкручиваем представления согласно приложенных скриншотов.

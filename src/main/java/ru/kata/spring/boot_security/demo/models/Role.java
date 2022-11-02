@@ -9,15 +9,10 @@ import java.util.List;
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private int id;
-    @Column(name="role")
+    private Integer id;
     private String role;
 
-    @ManyToMany
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany(mappedBy = "roleList")
     private List<User> userList;
 
     public Role() {
@@ -55,6 +50,8 @@ public class Role implements GrantedAuthority {
     public void setUserList(List<User> userList) {
         this.userList = userList;
     }
+
+    // обрезание
     public String getShortRoleName() {
         return this.role.substring(5);
     }
