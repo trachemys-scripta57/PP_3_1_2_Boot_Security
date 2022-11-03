@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -43,6 +44,22 @@ public class User {
         this.age = age;
         this.email = email;
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age
+                && name.equals(user.name)
+                && email.equals(user.email)
+                && password.equals(user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age, email, password);
     }
 
     public Integer getId() {
