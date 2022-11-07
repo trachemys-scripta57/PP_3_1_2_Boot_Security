@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import java.util.Set;
 public class MyUserDetails implements UserDetails {
     private final User user;
 
+    @Autowired
     public MyUserDetails(User user) {
         this.user = user;
     }
@@ -56,7 +58,7 @@ public class MyUserDetails implements UserDetails {
         return true;
     }
 
-    // для корректной работы контроллера
+    // для корректной работы UsersController
     public User getUser() {
         return user;
     }
