@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
     @GetMapping("/login")
     public String login() {
-        return "auth/login";
+        return "/login";
     }
 
     @GetMapping("/logout")

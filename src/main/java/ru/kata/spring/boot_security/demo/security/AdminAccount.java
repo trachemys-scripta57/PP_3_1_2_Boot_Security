@@ -25,7 +25,7 @@ public class AdminAccount {
     @PostConstruct
     public void admin() {
         User admin = new User("admin", 100, "admin@admin",
-                "admin");
+                "123");
         Role roleUser = new Role("ROLE_USER");
         Role roleAdmin = new Role("ROLE_ADMIN");
         if (userService.userByUsername(admin.getName()).isEmpty()) {
