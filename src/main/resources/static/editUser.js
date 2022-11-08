@@ -1,6 +1,5 @@
 $(async function() {
     editUser();
-
 });
 function editUser() {
     const editForm = document.forms["formEditUser"];

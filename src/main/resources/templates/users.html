@@ -1,79 +1,87 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8">
+    <title>User page</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>User information page</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 </head>
 <body>
+
+<!--Заголовок-->
+<header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 p-2 bg-dark text-white ">
+                <a class="font-weight-bold text-white" id="headerUsername"></a>
+                <a> with roles:</a>
+                <a id="headerRoles"></a>
+                <a th:href="@{/logout}" class="float-right text-secondary">Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
 <div class="container-fluid">
     <div class="row">
-        <!--Заголовок-->
-        <div class="col-sm-12 p-2 bg-dark text-white ">
-            <a class="font-weight-bold text-white" th:text="${user.email}">Email </a>
-            <a> with roles:</a>
-            <a th:each="role : ${user.roleList}">
-                <a th:text="${role.getShortRoleName()}">Roles</a>
-            </a>
-            <a th:href="@{/logout}" class="float-right text-secondary"> Logout </a>
-        </div>
+
         <!--Кнопка User слева-->
-        <div class="col-sm-2" style="padding-left: 0px; padding-right: 0px">
-            <ul class="nav nav-tabs flex-column">
-                <li class="nav-pills">
-                    <!--Маркер #user на кнопку.  -->
-                    <a class="nav-link active" data-toggle="tab" href="#user">User</a>
+
+        <div class="col-2" style="padding: 0; padding-top: 15px">
+            <ul class="nav nav-pills flex-column">
+                <!--Маркер #userPanel на кнопку.  -->
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#userPanel">User</a>
                 </li>
             </ul>
         </div>
-        <div class="col-sm-10 height: 1200 px" style="height: 1000px; background: #F7F7F7">
-            <!--Вкладка для юзера-->
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="user">
-                    <div class="col-sm-12 p-3">
-                        <h1>User information page</h1>
+
+        <!--Панель справа-->
+
+        <div class="col-10 bg-light">
+            <div class="tab-content" style="padding-top: 15px; height: 100vh">
+
+                <!--Вкладка для юзера-->
+
+                <div class="tab-pane fade show active" id="userPanel">
+                    <h2>User information-page</h2>
+                    <div class="card">
+                        <h5 class="card-header">About user</h5>
+                        <div class="card-body text-center">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                                </thead>
+                                <tbody id="userPanelBody">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <table class="table table-striped bg-white">
-                        <tbody class="border">
-                        <tr>
-                            <th>About User</th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <form th:method="GET" th:object="${user}">
-                                    <table class="table table-header table-hover bg-white" th:cols="9">
-                                        <thead class="thead align-content-center">
-                                        <tr class="b">
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Age</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td th:text="${user.id}">User ID</td>
-                                            <td th:text="${user.name}">Name</td>
-                                            <td th:text="${user.age}">Age</td>
-                                            <td th:text="${user.email}">Email</td>
-                                            <td> <a th:each="role : ${user.roleList}">
-                                                <a th:text="${role.getShortRoleName()}">Roles</a>
-                                            </a></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </form>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"
+        integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
+        crossorigin="anonymous"></script>
+
+<script src="../static/userPage.js"></script>
 </body>
 </html>

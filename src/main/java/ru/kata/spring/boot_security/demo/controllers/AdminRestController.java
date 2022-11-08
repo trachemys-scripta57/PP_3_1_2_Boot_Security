@@ -30,7 +30,7 @@ public class AdminRestController {
         return new ResponseEntity<>(userService.findAllUser()
                 .stream().map(userService::convertToDTO).toList(), HttpStatus.OK);
     }
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable("id") Integer id) {
         if (userService.findUser(id).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.security.MyUserDetails;
 
 @Controller
-//@RequestMapping("/user")
 public class UsersController {
 
     @GetMapping("/api/user")
