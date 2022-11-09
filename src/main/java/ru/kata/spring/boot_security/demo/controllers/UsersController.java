@@ -19,7 +19,7 @@ public class UsersController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
 
-        return new ResponseEntity<>(myUserDetails.getUser(), HttpStatus.OK);
+        return new ResponseEntity<>(myUserDetails.user(), HttpStatus.OK);
     }
     @GetMapping("/user")
     public String userPage() {
