@@ -9,7 +9,8 @@ import java.util.Set;
 @Service
 public interface RoleService {
     void saveAll(Set<Role> roles);
+
     Set<Role> findAllRoles();
-    Role convertToRole(RoleDTO roleDTO);
+
     RoleDTO convertToRoleDTO(Role role);
 }

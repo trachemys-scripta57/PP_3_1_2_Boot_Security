@@ -35,11 +35,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role convertToRole(RoleDTO roleDTO) {
-        return mapper.map(roleDTO, Role.class);
-    }
-
-    @Override
     public RoleDTO convertToRoleDTO(Role role) {
         return mapper.map(role, RoleDTO.class);
     }

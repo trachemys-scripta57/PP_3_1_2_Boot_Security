@@ -7,7 +7,7 @@ $('#delete').on('show.bs.modal', ev => {
 async function showDeleteModal(id) {
     let user = await getUser(id);
     let form = document.forms["formDeleteUser"];
-    // form.id.value = user.id;
+    form.id.value = user.id;
     form.name.value = user.name;
     form.age.value = user.age;
     form.email.value = user.email;
